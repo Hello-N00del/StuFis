@@ -49,14 +49,17 @@ class ChatMessage extends Model
      * @var array
      */
     protected $fillable = ['target_id', 'target', 'timestamp', 'creator', 'creator_alias', 'text', 'type',
-        'content'
+        'content',
     ];
 
-    protected $casts = [
-        'timestamp' => 'datetime',
-        'type' => ChatMessageType::class,
-        'text' => 'encrypted',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'timestamp' => 'datetime',
+            'type' => ChatMessageType::class,
+            'text' => 'encrypted',
+        ];
+    }
 
     public function user(): BelongsTo
     {

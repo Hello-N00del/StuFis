@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class ChatPanel extends Component
 {
-    public $content = "";
+    public $content = '';
 
     public $targetType;
 
@@ -30,11 +30,12 @@ class ChatPanel extends Component
         return view('livewire.chat-panel', ['messages' => $messages]);
     }
 
-    public function save() {
+    public function save()
+    {
 
         $this->validate(['content' => 'required|min:1']);
 
-        $cleanContent = strip_tags($this->content, '<p><br><strong><em><ul><ol><li><a><h1><h2><h3>');
+        $cleanContent = strip_tags((string) $this->content, '<p><br><strong><em><ul><ol><li><a><h1><h2><h3>');
 
         ChatMessage::create([
             'text' => $cleanContent,
@@ -46,6 +47,6 @@ class ChatPanel extends Component
             'timestamp' => now(),
         ]);
 
-        $this->content = "";
+        $this->content = '';
     }
 }

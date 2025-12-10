@@ -2,25 +2,26 @@
 
 namespace App\States\Project;
 
-use App\States\Project\ProjectState;
-
 class ApprovedByFinance extends ProjectState
 {
-
     public static string $name = 'done-hv';
 
+    #[\Override]
     public function expensable(): bool
     {
         return true;
     }
 
-    public function iconName() : string
+    #[\Override]
+    public function iconName(): string
     {
         return 'fas-scroll';
 
     }
-    public function color() : string {
+
+    #[\Override]
+    public function color(): string
+    {
         return 'green';
     }
-
 }

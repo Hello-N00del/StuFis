@@ -12,29 +12,36 @@ abstract class ProjectState extends State implements Wireable
 {
     public static string $name;
 
-    public function iconName() : string
+    public function iconName(): string
     {
         return 'file-pen';
 
     }
-    public function color() : string {
-        return "bg-indigo-500";
-    }
-    public function label() : string {
-        return __('project.stateNames.' . static::$name);
-    }
-    public function actionLabel() : string {
-        return __('project.stateActions.' . static::$name);
+
+    public function color(): string
+    {
+        return 'bg-indigo-500';
     }
 
-    public function expensable() : bool {
+    public function label(): string
+    {
+        return __('project.stateNames.'.static::$name);
+    }
+
+    public function actionLabel(): string
+    {
+        return __('project.stateActions.'.static::$name);
+    }
+
+    public function expensable(): bool
+    {
         return false;
     }
 
     /**
-     * @return StateConfig
      * @throws InvalidConfig
      */
+    #[\Override]
     public static function config(): StateConfig
     {
         $config = parent::config()
@@ -42,8 +49,7 @@ abstract class ProjectState extends State implements Wireable
             ->allowTransition(Draft::class, Applied::class)
             ->allowTransition([ApprovedByOrg::class, ApprovedByFinance::class, ApprovedByOther::class], Terminated::class)
             ->allowTransition([Applied::class, NeedOrgApproval::class, NeedFinanceApproval::class], Revoked::class)
-            ->allowTransition([Revoked::class], Draft::class)
-        ;
+            ->allowTransition([Revoked::class], Draft::class);
 
         // here would be some dynamic logic from config possible
 
@@ -51,10 +57,10 @@ abstract class ProjectState extends State implements Wireable
             Applied::class,
             NeedFinanceApproval::class,
             ApprovedByFinance::class,
-            //NeedOrgApproval::class,
+            // NeedOrgApproval::class,
             ApprovedByOrg::class,
             ApprovedByOther::class,
-            Terminated::class
+            Terminated::class,
         ], NeedOrgApproval::class);
 
         $config = $config->allowTransition([
@@ -62,30 +68,29 @@ abstract class ProjectState extends State implements Wireable
             NeedFinanceApproval::class,
             ApprovedByFinance::class,
             NeedOrgApproval::class,
-            //ApprovedByOrg::class,
+            // ApprovedByOrg::class,
             ApprovedByOther::class,
-            Terminated::class
+            Terminated::class,
         ], ApprovedByOrg::class);
-
 
         $config = $config->allowTransition([
             Applied::class,
-            //NeedFinanceApproval::class,
+            // NeedFinanceApproval::class,
             ApprovedByFinance::class,
             NeedOrgApproval::class,
             ApprovedByOrg::class,
             ApprovedByOther::class,
-            Terminated::class
+            Terminated::class,
         ], NeedFinanceApproval::class);
 
         $config = $config->allowTransition([
             Applied::class,
             NeedFinanceApproval::class,
-            //ApprovedByFinance::class,
+            // ApprovedByFinance::class,
             NeedOrgApproval::class,
             ApprovedByOrg::class,
             ApprovedByOther::class,
-            Terminated::class
+            Terminated::class,
         ], ApprovedByFinance::class);
 
         $config = $config->allowTransition([
@@ -94,8 +99,8 @@ abstract class ProjectState extends State implements Wireable
             ApprovedByFinance::class,
             NeedOrgApproval::class,
             ApprovedByOrg::class,
-            //ApprovedByOther::class,
-            Terminated::class
+            // ApprovedByOther::class,
+            Terminated::class,
         ], ApprovedByOther::class);
 
         return $config;
@@ -106,10 +111,11 @@ abstract class ProjectState extends State implements Wireable
         return [$this->getValue(), $this->getModel()->getKey()];
     }
 
-    public static function fromLivewire($value){
+    public static function fromLivewire($value)
+    {
         [$name, $id] = $value;
         $model = Project::find($id);
+
         return ProjectState::make($name, $model);
     }
-
 }

@@ -2,24 +2,26 @@
 
 namespace App\States\Project;
 
-use App\States\Project\ProjectState;
-
 class ApprovedByOrg extends ProjectState
 {
-
     public static string $name = 'ok-by-stura';
 
+    #[\Override]
     public function expensable(): bool
     {
         return true;
     }
 
-    public function iconName() : string
+    #[\Override]
+    public function iconName(): string
     {
         return 'fas-check';
 
     }
-    public function color() : string {
+
+    #[\Override]
+    public function color(): string
+    {
         return 'green';
     }
 }

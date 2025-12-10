@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\PtfProject;
 
 use Database\Factories\ActorFactory;
 use Eloquent;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -55,12 +56,14 @@ class Actor extends Model
 {
     use HasFactory;
 
-    public function scopeOrganisation(Builder $builder): void
+    #[Scope]
+    protected function organisation(Builder $builder): void
     {
         $builder->where('is_organisation', '=', true);
     }
 
-    public function scopeUser(Builder $builder): void
+    #[Scope]
+    protected function user(Builder $builder): void
     {
         $builder->where('is_organisation', '=', false);
     }

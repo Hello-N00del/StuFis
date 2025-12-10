@@ -4,7 +4,7 @@ namespace App\Models\Legacy;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneOrManyThrough;
 
 /**
  * App\Models\Legacy\LegacyBudgetPlan
@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|LegacyBudgetPlan whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LegacyBudgetPlan whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LegacyBudgetPlan whereVon($value)
+ * @method HasOneOrManyThrough throughBudgetGroups()
  *
  * @mixin \Eloquent
  */
@@ -54,32 +55,34 @@ class LegacyBudgetPlan extends Model
         return $this->throughBudgetGroups()->hasBudgetItems();
     }
 
-    public static function latest() : \Eloquent|static {
+    public static function latest(): \Eloquent|static
+    {
         return self::orderBy('id', 'desc')->first();
     }
 
-    public static function findByDate(Carbon $date) : static
+    public static function findByDate(Carbon $date): static
     {
         return self::query()->where('von', '<=', $date)
-            ->where(fn ($query) =>
-                $query->where('bis', '>=', $date)
-                      ->orWhereNull('bis'))
+            ->where(fn ($query) => $query->where('bis', '>=', $date)
+                ->orWhereNull('bis'))
             ->first();
     }
 
-    public function label() : string {
-        $format = "M y";
-        if ($this->bis === null){
+    public function label(): string
+    {
+        $format = 'M y';
+        if ($this->bis === null) {
             return "HPP$this->id ab {$this->von->format($format)}";
-        }else{
+        } else {
             return "HHP$this->id {$this->von->format($format)} - {$this->bis->format($format)}";
         }
     }
 
-    protected $casts = [
-        'von' => 'date',
-        'bis' => 'date',
-    ];
-
-
+    protected function casts(): array
+    {
+        return [
+            'von' => 'date',
+            'bis' => 'date',
+        ];
+    }
 }
