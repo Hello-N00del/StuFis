@@ -639,7 +639,7 @@ return [
         'datenschutz-url' => 'https://open-administration.de/index.php/datenschutz/',
         'issues-url' => '',
         'help-url' => 'mailto:service@open-administration.de',
-        'mail-domain' => 'open-administration.de',
+        'mail-domain' => 'hs-harz.de',
         'finanzen-mail' => 'lukas.staab@open-administration.de',
         'projekt-form' => [],
     ],
