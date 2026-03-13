@@ -616,7 +616,8 @@ return [
                'Referat Initiativen und Hochschulsport',
                'Referat Studentische Angelegenheiten und Internationales',
                'Referat Kommunikation mit dem Standort Halberstadt',
-               'Referat Marketing'
+               'Referat Marketing',
+               'Referat Digitales',
            ],
         ],
         'rechtsgrundlagen' => [
