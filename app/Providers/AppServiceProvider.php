@@ -6,6 +6,8 @@ use App\Services\Auth\AuthService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
+use App\Support\Flux;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +45,13 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(function (SocialiteWasCalled $event): void {
             $event->extendSocialite('stumv', \SocialiteProviders\LaravelPassport\Provider::class);
         });
+
+        Blade::anonymousComponentNamespace('flux', 'flux');
+
+        // Make Flux shim available in Blade templates as Flux::classes()
+        if (! class_exists('Flux')) {
+            class_alias(Flux::class, 'Flux');
+        }
 
         $this->bootRoute();
 
